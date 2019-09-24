@@ -25,12 +25,11 @@ namespace TechnicalTask.Services
             var response = await httpClient.GetAsync($"{FHIRPersonUrl}?_pretty=true");
             var responseContent = await response.Content.ReadAsStringAsync();
             dynamic persons = JsonConvert.DeserializeObject<dynamic>(responseContent);
-            var resultPerson = JsonConvert.DeserializeObject<List<Person>>(persons.entry.ToString());
-            //List<Person> resultPerson = new List<Person>();
-            /*foreach(var person in persons.entry)
+            List<Person> resultPerson = new List<Person>();
+            foreach(var person in persons.entry)
             {
                 resultPerson.Add(JsonConvert.DeserializeObject<Person>(person["resource"].ToString()));
-            }*/
+            }
 
             return resultPerson;
         }
