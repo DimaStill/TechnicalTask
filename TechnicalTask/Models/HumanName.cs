@@ -9,8 +9,8 @@ namespace TechnicalTask.Models
     {
         public string Text { get; set; }
         public string Family { get; set; }
-        public string Given { get; set; }
-        public string Prefix { get; set; }
-        public string Suffix { get; set; }
+        public List<string> Given { get; set; }
+        public List<string> Prefix { get; set; }
+        public List<string> Suffix { get; set; }
     }
 }
