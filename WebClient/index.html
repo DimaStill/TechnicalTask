@@ -1,0 +1,122 @@
+<html>
+    <head>
+        <title>WebClient</title>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js' defer="defer"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" integrity="sha256-FAOaXTpl90/K8cXmSdsskbQN3nKYulhCpPbcFzGTWKI=" crossorigin="anonymous" />
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha256-bqVeqGdJ7h/lYPq6xrPv/YGzMEb6dNxlfiTUHSgRCp8=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.en-GB.min.js" integrity="sha256-zWVLv9rjdSAUVWhtqJUdGV1O5ONXpXMEJsOkp7B2gZ4=" crossorigin="anonymous"></script>
+        <script type='text/javascript' src='scripts/script.js' defer="defer"></script>
+    </head>
+    <body>
+        <table class="table table-hover">
+            <thead>
+                <tr class="text-center">
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Birthday</th>
+                    <th scope="col">Active</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: persons">
+                <tr class="text-center" data-toggle="modal" data-target="#exampleModal" data-bind="click: $parent.openPersonalInfoModal">
+                    <a href="#">
+                    <th scope="row" data-bind="text: id"></th>
+                    <td data-bind="text: name[0].text"></td>
+                    <td data-bind="text: new Date(birthDate).toLocaleDateString('en-US')"></td>
+                    <td><input class="form-check-input" type="checkbox" data-bind="checked: active" disabled></td>
+                    <td>
+                        <a href="#" data-bind="click: $parent.removePerson">Delete</a>
+                    </td>
+                </a>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table" data-bind="if: showAddPerson">
+            <thead>
+                <tr class="text-center">
+                    <th scope="col">Prefix</th>
+                    <th scope="col">First name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Suffix</th>
+                    <th scope="col">Birthday</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="text-center">
+                    <td>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Prefix name" data-bind="value: newPrefixName">
+                        </div>   
+                    </td>
+                    <td>
+                        <div class="col">
+                            <input type="text" class="form-control given-name" placeholder="First name" data-bind="value: newGivenName">
+                        </div>   
+                    </td>
+                    <td>
+                        <div class="col">
+                            <input type="text" class="form-control family" placeholder="Last name" data-bind="value: newFamily">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Suffix name" data-bind="value: newSuffixName">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col" id="date">   
+                            <input type="text" class="form-control birthday" data-bind="value: newPerson.birthdate">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col btn-group"> 
+                            <button type="button" class="btn btn-secondary m-1" data-bind="click: addPerson">Save</button>
+                            <button type="button" class="btn btn-secondary m-1" data-bind="click: displayAddPerson">Cancel</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+          
+          
+        <div class="col text-center"> 
+            <button type="button" class="btn btn-secondary" data-bind="click: displayAddPerson">Add person</button>
+        </div>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h5 class="modal-title" id="exampleModalLabel">Personal info</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col">
+                            <h5>Given Name</h5>
+                            <input type="text" class="form-control update-given-name" data-bind="textInput: selectGivenName">
+                            <h5>Family</h5>
+                            <input type="text" class="form-control update-family" data-bind="textInput: selectFamily">
+                            <h5>Preffix</h5>
+                            <input type="text" class="form-control" data-bind="textInput: selectPrefixName">
+                            <h5>Suffix</h5>
+                            <input type="text" class="form-control" data-bind="textInput: selectSuffixName">
+                            <h5>Birthday</h5>
+                            <input type="text" class="form-control" data-bind="textInput: new Date(selectPerson.birthDate()).toLocaleDateString('en-US')">
+                        </div>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <button type="button" class="btn btn-primary" data-bind="click: updatePerson">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
