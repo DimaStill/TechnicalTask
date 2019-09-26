@@ -26,9 +26,16 @@ namespace TechnicalTask.Services
             var responseContent = await response.Content.ReadAsStringAsync();
             dynamic persons = JsonConvert.DeserializeObject<dynamic>(responseContent);
             List<Person> resultPerson = new List<Person>();
-            foreach(var person in persons.entry)
+            try
             {
-                resultPerson.Add(JsonConvert.DeserializeObject<Person>(person["resource"].ToString()));
+                foreach (var person in persons.entry)
+                {
+                    resultPerson.Add(JsonConvert.DeserializeObject<Person>(person["resource"].ToString()));
+                }
+            }
+            catch
+            {
+                return resultPerson;
             }
 
             return resultPerson;
@@ -46,11 +53,13 @@ namespace TechnicalTask.Services
         public async Task<Person> CreatePerson(Person newPerson)
         {
             var content = new StringContent(JsonConvert.SerializeObject(newPerson), Encoding.UTF8, "application/json");
+            Console.WriteLine($"\n\n{await content.ReadAsStringAsync()}\n\n");
             var response = await httpClient.PostAsync($"{FHIRPersonUrl}", content);
             var responseContent = await response.Content.ReadAsStringAsync();
-            var personId = JsonConvert.DeserializeObject<Person>(responseContent);
 
-            return personId;
+            var person = JsonConvert.DeserializeObject<Person>(responseContent);
+
+           return person;
         }
 
         public async Task<Person> UpdatePerson(int id, Person person)
